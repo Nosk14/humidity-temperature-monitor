@@ -18,7 +18,10 @@ if __name__ == '__main__':
     if not os.environ["LOCATION"]:
         raise Exception("LOCATION environment variable not specified.")
 
-    publisher = Publisher(os.environ["LOCATION"])
+    if not os.environ["MQTT_ADDRESS"]:
+        raise Exception("MQTT_ADDRESS environment variable not specified.")
+
+    publisher = Publisher(os.environ["MQTT_ADDRESS"], os.environ["LOCATION"])
     dht = DHT22(14)
 
     while True:
