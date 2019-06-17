@@ -1,14 +1,17 @@
 from publisher import Publisher
+from sensor import DHT22
 from time import sleep
+import RPi.GPIO as GPIO
 import logging
 import os
-import signal
 
-DELAY = 5 * 60
+DELAY = 3 * 60
+ERROR_DELAY = 30
 
 log_level = os.environ.get("LOG_LEVEL", 20)
 logging.basicConfig(format='[%(asctime)s][%(levelname)s] %(message)s', level=int(log_level))
 
+GPIO.setmode(GPIO.BCM)
 
 if __name__ == '__main__':
 
@@ -16,11 +19,15 @@ if __name__ == '__main__':
         raise Exception("LOCATION environment variable not specified.")
 
     publisher = Publisher(os.environ["LOCATION"])
+    dht = DHT22(14)
 
     while True:
         logging.debug("Reading values from sensor.")
-        # TODO: get sensor values
-        logging.info("Publishing values.")
-        # publisher publisher.publish(humidity=, temperature=)
-        logging.debug("Waitting for next cycle.")
-        sleep(DELAY)
+        data = dht.read_data()
+        if data[2]:
+            logging.warning("Error reading sensor data.")
+            sleep(ERROR_DELAY)
+        else:
+            logging.info("Publishing values.")
+            publisher.publish(humidity=data[0], temperature=data[1])
+            sleep(DELAY)
