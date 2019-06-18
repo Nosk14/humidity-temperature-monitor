@@ -2,7 +2,7 @@ from paho.mqtt.client import Client
 from datetime import datetime
 import logging
 
-TOPIC = "sensors/#"
+TOPIC = "sensors"
 
 class Publisher:
 

@@ -1,6 +1,7 @@
 docker stop humidity-temperature-monitor
 docker rm humidity-temperature-monitor
 docker run -d \
+    --privileged \
     -e LOCATION=$1 \
     -e MQTT_ADDRESS=$2 \
     --restart unless-stopped \
