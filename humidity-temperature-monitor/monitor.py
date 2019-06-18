@@ -26,11 +26,11 @@ if __name__ == '__main__':
 
     while True:
         logging.debug("Reading values from sensor.")
-        data = dht.read_data()
-        if data[2]:
+        h, t, error = dht.read_data()
+        if error:
             logging.warning("Error reading sensor data.")
             sleep(ERROR_DELAY)
         else:
             logging.info("Publishing values.")
-            publisher.publish(humidity=data[0], temperature=data[1])
+            publisher.publish(humidity=h, temperature=t)
             sleep(DELAY)
