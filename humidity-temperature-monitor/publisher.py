@@ -25,5 +25,5 @@ class Publisher:
         except Exception as ex:
             logging.error(ex)
 
-    def __build_payload(self, property, value):
-        return '{"timestamp":"{}", "place": "{}", "property":"{}", "value":{:.4f}}'.format(datetime.now(), self.location, property, value)
+    def __build_payload(self, prop, value):
+        return '{{"timestamp":"{}", "place": "{}", "property":"{}", "value":{:.4f}}}'.format(datetime.now(), self.location, prop, value)
